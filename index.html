@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>datenflieger.xyz</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      padding: 0;
+    }
+
+    .play-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+
+    .play-btn:hover { opacity: 0.6; }
+
+    .play-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: #fff;
+      margin-left: 4px;
+    }
+
+    .play-btn.playing svg { margin-left: 0; }
+
+    audio { display: none; }
+  </style>
+</head>
+<body>
+  <audio id="audio" src="audio.ogg" preload="auto"></audio>
+
+  <button class="play-btn" id="btn" aria-label="Play">
+    <svg id="icon" viewBox="0 0 24 24">
+      <polygon points="5,3 19,12 5,21"/>
+    </svg>
+  </button>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const btn = document.getElementById('btn');
+    const icon = document.getElementById('icon');
+
+    const playIcon = '<polygon points="5,3 19,12 5,21"/>';
+    const pauseIcon = '<rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/>';
+
+    btn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener('play', () => {
+      icon.innerHTML = pauseIcon;
+      btn.classList.add('playing');
+      btn.setAttribute('aria-label', 'Pause');
+    });
+
+    audio.addEventListener('pause', () => {
+      icon.innerHTML = playIcon;
+      btn.classList.remove('playing');
+      btn.setAttribute('aria-label', 'Play');
+    });
+
+    audio.addEventListener('ended', () => {
+      icon.innerHTML = playIcon;
+      btn.classList.remove('playing');
+      btn.setAttribute('aria-label', 'Play');
+    });
+  </script>
+</body>
+</html>
